@@ -1,26 +1,22 @@
 <ion-view view-title="Inicio">
-  <ion-content>
-    <ion-item>
-    	<a class="item item-avatar item-wrap">
-        	<img ng-src=https://s-media-cache-ak0.pinimg.com/originals/c5/41/af/c541aff72111c64fe4fa03585a2da91b.jpg width="100" height="100">
-            <label style="margin-top:-100px; margin-left:120px;">
-                <h2><strong>Brian Uribe</strong> </h2>
-                <h3>Bauq</h3>
-            </label>
-    	</a>
-    </ion-item>
-	    <div style="text-align: left; margin-top: 20px;">
-            <h1> Productos Bancarios: </h1>
-	        <a class="item item-text-wrap">
-	            <h3>Cuenta de ahorros</h3>
-	            <p>**8759</p>
-	            <p>$870,000</p>
-	        </a>
-	        <a class="item item-text-wrap">
-	            <h3>Terjeta de Credito</h3>
-	            <p>**7854</p>
-	            <p>$268,300</p>
-	        </a>
-	    </div>
-  </ion-content>
+    <ion-nav-buttons side="right">
+        <img ng-src={{fotoPerfil}} idth="35" height="35">
+        <label>
+            <h6>  {{nombreUsuario}}</br> {{email}}</h6>
+        </label>
+    </ion-nav-buttons>
+    <ion-content>
+        <ion-item>
+        </ion-item>
+            <h1 style="text-align:center;">Mis Productos </h1>
+            <ion-item ng-repeat="producto in productos" item="productos">
+                <a class="item item-text-wrap">
+                    <label>
+                        <h2>Nombre: {{producto.nombre}}</h2>
+                        <h4>Tipo: {{producto.tipoProducto}}</h4>
+                        <h4>Saldo: {{producto.saldo}}</h4>
+                    </label>
+                </a>
+            </ion-item>
+    </ion-content>
 </ion-view>

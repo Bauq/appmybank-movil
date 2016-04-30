@@ -36,7 +36,8 @@ angular.module('starter', ['ionic','firebase','starter.controllers','starter.ser
       url: '/main',
       views: {
         'menuContent': {
-          templateUrl: 'templates/main.html'
+          templateUrl: 'templates/main.html',
+          controller: 'AppCtrl'
         }
       }
     })
