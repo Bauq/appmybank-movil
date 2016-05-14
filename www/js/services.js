@@ -55,6 +55,7 @@ angular.module('starter.services', [])
                         }
                     })
 ;                    $state.go('app.main');
+
                 }
             }, {
                 remember: "sessionOnly",
@@ -89,6 +90,4 @@ angular.module('starter.services', [])
              
         }
 
-
-         
     });
