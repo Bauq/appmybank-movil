@@ -1,0 +1,22 @@
+<ion-view view-title="Inicio">
+    <ion-nav-buttons side="right">
+        <img ng-src={{fotoPerfil}} idth="35" height="35">
+        <label>
+            <h6>  {{nombreUsuario}}</br> {{email}}</h6>
+        </label>
+    </ion-nav-buttons>
+    <ion-content>
+        <div class="list" ng-init="listarProductosCliente()">
+            <h1 style="text-align:center;">Mis Productos </h1>
+            <ion-item ng-repeat="producto in productos" item="productos">
+                <a class="item item-text-wrap">
+                    <label>
+                        <h2>Nombre: {{producto.name}}</h2>
+                        <h4>Tipo: {{producto.type}}</h4>
+                        <h4>Saldo: {{producto.balance}}</h4>
+                    </label>
+                </a>
+            </ion-item>
+        </div>
+    </ion-content>
+</ion-view>
