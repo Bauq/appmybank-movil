@@ -31,6 +31,14 @@ angular.module('starter.services', [])
             });
         };
 
+        $rootScope.salir = function() {
+        $window.localStorage.email = "";
+        $window.localStorage.nombreUsuario = "";
+        $window.localStorage.token = "";
+        $window.localStorage.fotoPerfil = "";
+        $state.go('login');
+    };
+
         $rootScope.iniciarSesionGoogle = function() {
             usersRef.authWithOAuthPopup("google", function(error, authData) {
                 if (!error) {

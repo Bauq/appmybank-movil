@@ -16,6 +16,7 @@
     <preference name="BackupWebStorage" value="none" />
     <allow-intent href="*.firebaseio.com" />
     <allow-intent href="auth.firebase.com" />
+    <allow-intent href="tel:*" />
     <plugin name="cordova-plugin-contacts" spec="^2.1.0" />
     <plugin name="cordova-plugin-geolocation"/>
     <plugin name="cordova-plugin-whitelist" spec="^1.0.0" />

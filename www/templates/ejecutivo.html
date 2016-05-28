@@ -1,24 +1,26 @@
-<ion-view view-title="Inicio">
+<ion-view view-title="Ejecutivo">
     <ion-nav-buttons side="right">
-        <img ng-src={{fotoPerfil}} idth="35" height="35">
-        <label>
-            <h6>  {{nombreUsuario}}</br> {{email}}</h6>
+        <img class = "redondo" ng-src={{fotoPerfil}} width="35" height="35">
+        <label class= "avatar" style=" margin-left:10px;">
+            <font size="2" color="White"> {{nombreUsuario}} <br> {{email}} </font>
+            <font></font>
         </label>
     </ion-nav-buttons>
     <ion-content>
         <div class="list" ng-init="mostrarEjecutivo()">
             <h1 style="text-align:center;">Ejecutivo encargado </h1>
-                <a class="item item-text-wrap">
-                    <label>
-                        <img ng-src={{contact.foto}} idth="50" height="50">
-                        <h2>Nombre: {{contact.nombre}}</h2>
-                        <h4>Correo: {{contact.correo}}</h4>
-                        <h4>Celular: {{contact.celular}}</h4>
-                        <button class="button button-full button-positive" ng-click="anadirContacto()">
-                            Agregar a contactos
-                        </button>
-                    </label>
-                </a>
+            <a class="item item-text-wrap">
+                <label>
+                    <img ng-src={{contact.foto}} idth="50" height="50">
+                    <h2>Nombre: {{contact.nombre}}</h2>
+                    <h4>Correo: {{contact.correo}}</h4>
+                    <h4>Celular: {{contact.celular}}</h4>
+                    <a class="button button-full button-positive" href="tel:{{contact.celular}}">Llamar</a>
+                    <button class="button button-full button-positive" ng-click="anadirContacto()">
+                        Agregar a contactos
+                    </button>
+                </label>
+            </a>
             </ion-item>
         </div>
         <div id="map" data-tap-disabled="true"></div>

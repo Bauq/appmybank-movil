@@ -22,3 +22,18 @@
 .scroll{
     height: 100%
 }
+
+.background{
+    background-image: url("../img/background.jpg");
+    background-size: cover;
+    background-position: center center; 
+}
+
+.centrado {
+    position: relative;
+  top: 30%; 
+}
+
+.botonRedondeado{
+    border-radius:-2px -2px -2px -2px;
+}
