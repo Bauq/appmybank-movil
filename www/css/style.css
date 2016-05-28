@@ -1,5 +1,13 @@
 /* Empty. Add your own CSS if you like */
 
+.redondo {
+    border: 2px solid grey;
+    margin: 0;
+    padding: 0;
+    border-radius: 800px;
+    overflow: hidden;
+}
+
 #map {
     width: 80%;
     height: 50%;
@@ -7,3 +15,10 @@
     left: 10%;
 }
 
+.avatar {
+	  display: block;
+}
+
+.scroll{
+    height: 100%
+}

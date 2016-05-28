@@ -10,19 +10,20 @@ angular.module('starter.controllers', ['starter.services'])
 
 .controller('ProductsController', function($scope, $rootScope, Auth, $window) {
     $scope.productos = [];
-    $scope.nombreUsuario= $window.localStorage.nombreUsuario;
+    $scope.nombreUsuario = $window.localStorage.nombreUsuario;
     $scope.email = $window.localStorage.email;
     $scope.fotoPerfil = $window.localStorage.fotoPerfil;
     $scope.listarProductosCliente = function() {
         Auth.listarProductos($window.localStorage.email, $window.localStorage.token).then(function(data) {
-          $rootScope.show();
-           var producto;
+            $rootScope.show();
+            var producto;
             for (producto = 0; producto < data.data.length; producto++) {
                 $scope.productos.push(data.data[producto]);
             }
-          $rootScope.hide();
+            $rootScope.hide();
         }).catch(function(error) {
-            $rootScope.showAlert('error',error.data.data);
+            $rootScope.showAlert('error', error.data.data);
+            $state.go('login');
         })
 
     }
@@ -40,121 +41,69 @@ angular.module('starter.controllers', ['starter.services'])
             $rootScope.showAlert('error',error.data.data);
         })*/
 
-.controller('EjecutivoController', function($scope, $rootScope,$cordovaContacts,$cordovaGeolocation, Auth, $window) {
+.controller('EjecutivoController', function($scope, $rootScope, $cordovaContacts, $cordovaGeolocation, Auth, $state, $window) {
     $scope.ejecutivos = [];
     $scope.mostrarEjecutivo = function() {
-         $scope.contact = Auth.mostrarEjecutivo($window.localStorage.email, $window.localStorage.token)
-        console.log($scope.contact)
-     }
+        Auth.mostrarEjecutivo($window.localStorage.email, $window.localStorage.token).then(function(data) {
+            console.log(data);
+            $scope.contact = data.data;
+        }).catch(function(error) {
+            $rootScope.showAlert('error', error.data.error);
+            $state.go('login');
+        });
 
-               
-    $scope.addContact = function() {
+    }
 
-           
-            /*$scope.contacto = { 
+
+    $scope.anadirContacto = function() {
+
+        $scope.contacto = {
             "displayName": $scope.contact.nombre,
-            
-            "phoneNumbers": [
-                {
-                    "value": $scope.contact.celular,
-                    "type": "mobile"
-                }             
-            ],
-            "emails": [
-                {
-                    "value": $scope.contact.correo,
-                    "type": "home"
-                }
-            ]};*/
 
-            $scope.contacto = {     // We will use it to save a contact
-      
-            "displayName": "Gajotres",
-            "name": {
-                "givenName"  : "Dragan",
-                "familyName" : "Gaic",
-                "formatted"  : "Dragan Gaic"
-            },
-            "nickname": 'Gajotres',
-            "phoneNumbers": [
-                {
-                    "value": "+385959052082",
-                    "type": "mobile"
-                },
-                {
-                    "value": "+385914600731",
-                    "type": "phone"
-                }               
-            ],
-            "emails": [
-                {
-                    "value": "dragan.gaic@gmail.com",
-                    "type": "home"
-                }
-            ],
-            "addresses": [
-                {
-                    "type": "home",
-                    "formatted": "Some Address",
-                    "streetAddress": "Some Address",
-                    "locality":"Zagreb",
-                    "region":"Zagreb",
-                    "postalCode":"10000",
-                    "country":"Croatia"
-                }
-            ],
-            "ims": null,
-            "organizations": [
-                {
-                    "type": "Company",
-                    "name": "Generali",
-                    "department": "IT",
-                    "title":"Senior Java Developer"
-                }
-            ],
-            "birthday": Date("08/01/1980"),
-            "note": "",
-            "photos": [
-                {
-                    "value": "https://pbs.twimg.com/profile_images/570169987914924032/pRisI2wr_400x400.jpeg"
-                }
-            ],
-            "categories": null,
-            "urls": null
-        } 
-
-            $cordovaContacts.save($scope.contacto).then(function(result) {
-                console.log('Contact Saved!');
-            }, function(err) {
-                console.log('An error has occured while saving contact data!');
-            });
+            "phoneNumbers": [{
+                "value": $scope.contact.celular,
+                "type": "mobile"
+            }],
+            "emails": [{
+                "value": $scope.contact.correo,
+                "type": "home"
+            }]
         };
 
-        $scope.mostrarMapa = function(){
-             var options = {timeout: 10000, enableHighAccuracy: true};
- 
-              $cordovaGeolocation.getCurrentPosition(options).then(function(position){
-             
-                var latLng = new google.maps.LatLng(6.173388, -75.591214);
-                var mapOptions = {
-                  center: latLng,
-                  zoom: 15,
-                  mapTypeId: google.maps.MapTypeId.ROADMAP
-                };
-             
-                $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
-                
-                 var marker = new google.maps.Marker({
-                    position: latLng,
-                    map: $scope.map,
-                    title: 'Hello World!'
-                  });
-              }, function(error){
-                console.log("Could not get location");
-              });
-        };
+        $cordovaContacts.find({ filter: $scope.contact.nombre, fields: ['displayName'] }).then(function(datoContacto) { //replace 'Robert' with '' if you want to return all contacts with .find()
+            if (JSON.stringify(datoContacto) == "[]") {
+                $cordovaContacts.save($scope.contacto).then(function(result) {
+                    $rootScope.showAlert("Proceso exitoso");
+                }, function(err) {  
+                    $rootScope.showAlert("Ha ocurrido un error, por favor intente más tarde")
+                });
+            }else{
 
-        $scope.mostrarMapa();
+            }
 
-    })
+        });
 
+
+    };
+
+    $scope.mostrarMapa = function() {
+        var options = { timeout: 10000, enableHighAccuracy: true };
+
+        var latLng = new google.maps.LatLng(6.173388, -75.591214);
+        var mapOptions = {
+            center: latLng,
+            zoom: 15,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        }
+        $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+        var marker = new google.maps.Marker({
+            position: latLng,
+            map: $scope.map,
+            title: 'Hello World!'
+        });
+    };
+
+    $scope.mostrarMapa();
+
+})
