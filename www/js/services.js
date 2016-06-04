@@ -3,7 +3,7 @@ angular.module('starter.services', [])
         var usersRef = new Firebase("https//mybankatom.firebaseio.com/users");
         //var usersRef = new Firebase("https://radiant-inferno-2748.firebaseio.com/users");
         var user;
-        var conexionLegacyApi = "http://mybank-legacy-api.herokuapp.com/api/";
+        var conexionLegacyApi = "http://mybank-legacy-api.herokuapp.com/api/v2/";
          var conexionExternalApi = "https://external-api-test.herokuapp.com/";
 
         $rootScope.eliminarUsuarioFirebase = function() {
@@ -76,11 +76,13 @@ angular.module('starter.services', [])
         };
         return {
             listarProductos: function(email, token) {
-                return $http.get(conexionLegacyApi + 'product/getByEmail?token=' + token);
+                return $http.get(conexionLegacyApi + 'producto/get/'+ email +'?token=' + token);
             },
             mostrarEjecutivo: function(email, token) {
                 return $http.get(conexionExternalApi +'ejecutivo/' +email+'/'+ token);
-
+            },
+            mostrarMovimientosProductos : function(email,token,idProd){
+                return $http.get(conexionLegacyApi + 'movimiento/get/'+idProd +'/' +email+'?token='+ token);
             }
 
 

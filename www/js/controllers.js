@@ -8,13 +8,15 @@ angular.module('starter.controllers', ['starter.services'])
     };
 })
 
-.controller('ProductsController', function($scope, $rootScope, Auth, $window) {
-    $scope.productos = [];
+.controller('ProductsController', function($scope, $rootScope, Auth, $window, $ionicModal) {
+
     $scope.nombreUsuario = $window.localStorage.nombreUsuario;
     $scope.email = $window.localStorage.email;
     $scope.fotoPerfil = $window.localStorage.fotoPerfil;
+
     $scope.listarProductosCliente = function() {
         Auth.listarProductos($window.localStorage.email, $window.localStorage.token).then(function(data) {
+            $scope.productos = [];
             $rootScope.show();
             var producto;
             for (producto = 0; producto < data.data.length; producto++) {
@@ -25,8 +27,35 @@ angular.module('starter.controllers', ['starter.services'])
             $rootScope.showAlert('error', error.data.data);
             $state.go('login');
         })
-
     }
+    $scope.descripcion = function(producto) {
+        $scope.movimientos = [];
+        $scope.productoDescrip = {
+            nombre: '',
+            tipo: '',
+            saldo: 0
+        };
+        $scope.productoDescrip.nombre = producto.nombre;
+        $scope.productoDescrip.tipo = producto.tipo;
+        $scope.productoDescrip.saldo = producto.saldo;
+
+        Auth.mostrarMovimientosProductos($window.localStorage.email, $window.localStorage.token, producto.id).then(function(data) {
+            var movimiento;
+            for (movimiento = 0; movimiento < data.data.length; movimiento++) {
+                $scope.movimientos.push(data.data[movimiento]);
+            }
+        }).catch(function(error) {
+            $rootScope.showAlert('error', error.data.data);
+        })
+        $scope.detalleProducto.show();
+    }
+
+    $ionicModal.fromTemplateUrl('detalleProducto.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function(modal) {
+        $scope.detalleProducto = modal;
+    });
 })
 
 
@@ -35,12 +64,12 @@ angular.module('starter.controllers', ['starter.services'])
     $scope.nombreUsuario = $window.localStorage.nombreUsuario;
     $scope.email = $window.localStorage.email;
     $scope.fotoPerfil = $window.localStorage.fotoPerfil;
-    
+
     $scope.mostrarEjecutivo = function() {
         Auth.mostrarEjecutivo($window.localStorage.email, $window.localStorage.token).then(function(data) {
-            console.log(data.data.ubicacion.latitud);
+            console.log(data.data);
             $scope.contact = data.data;
-             $scope.mostrarMapa();
+            $scope.mostrarMapa();
         }).catch(function(error) {
             $rootScope.showAlert('error', error.data.error);
             $state.go('login');
@@ -68,10 +97,10 @@ angular.module('starter.controllers', ['starter.services'])
             if (JSON.stringify(datoContacto) == "[]") {
                 $cordovaContacts.save($scope.contacto).then(function(result) {
                     $rootScope.showAlert("Proceso exitoso, el contacto se ha almacenado en su teléfono");
-                }, function(err) {  
+                }, function(err) {
                     $rootScope.showAlert("Ha ocurrido un error, por favor intente más tarde")
                 });
-            }else{
+            } else {
 
             }
         });
@@ -80,7 +109,7 @@ angular.module('starter.controllers', ['starter.services'])
     $scope.mostrarMapa = function() {
         var options = { timeout: 10000, enableHighAccuracy: true };
 
-        var latLng = new google.maps.LatLng($scope.contact.ubicacion.latitud,$scope.contact.ubicacion.longitud);
+        var latLng = new google.maps.LatLng($scope.contact.ubicacion.latitud, $scope.contact.ubicacion.longitud);
         var mapOptions = {
             center: latLng,
             zoom: 15,
@@ -94,5 +123,5 @@ angular.module('starter.controllers', ['starter.services'])
             title: 'Hello World!'
         });
     };
-   
+
 })

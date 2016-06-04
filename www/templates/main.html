@@ -1,23 +1,61 @@
 <ion-view view-title="Productos">
     <ion-nav-buttons side="right">
-        <img class = "redondo" ng-src={{fotoPerfil}} width="35" height="35">
-        <label class= "avatar" style=" margin-left:10px;">
-            <font size="2" color="White"> {{nombreUsuario}} <br> {{email}} </font>
+        <img class="redondo" ng-src={{fotoPerfil}} width="35" height="35">
+        <label class="avatar" style=" margin-left:10px;">
+            <font size="2" color="White"> {{nombreUsuario}}
+                <br> {{email}} </font>
             <font></font>
         </label>
     </ion-nav-buttons>
     <ion-content>
         <div class="list" ng-init="listarProductosCliente()">
             <h1 style="text-align:center;">Mis Productos </h1>
-            <ion-item ng-repeat="producto in productos" item="productos">
+            <ion-item ng-repeat="producto in productos" item="productos" ng-click="descripcion(producto)">
                 <a class="item item-text-wrap">
                     <label>
-                        <h2>Nombre: {{producto.name}}</h2>
-                        <h4>Tipo: {{producto.type}}</h4>
-                        <h4>Saldo: {{producto.balance}}</h4>
+                        <h2>Nombre: {{producto.nombre}}</h2>
+                        <h4>Tipo: {{producto.tipo}}</h4>
+                        <h4>Saldo: {{producto.saldo}}</h4>
                     </label>
                 </a>
             </ion-item>
         </div>
     </ion-content>
+    <script id="detalleProducto.html" type="text/ng-template">
+        <ion-modal-view>
+            <ion-header-bar class="bar bar-header bar-positive">
+                <h1 class="title">{{productoDescrip.nombre}}</h1>
+                <button class="button button-clear button-primary" ng-click="detalleProducto.hide()">Cancelar</button>
+            </ion-header-bar>
+            <ion-content class="padding">
+                <a class="item item-avatar" href="#">
+                    <h2><b>Nombre Producto:</b></h2>
+                    <h3>{{productoDescrip.nombre}}</h3>
+                </a>
+                <a class="item item-avatar" href="#">
+                    <h2><b>Tipo:</b></h2>
+                    <h3>{{productoDescrip.tipo}}</h3>
+                </a>
+                <a class="item item-avatar" href="#">
+                    <h2><b>Saldo:</b></h2>
+                    <h3>{{productoDescrip.saldo}}</h3>
+                </a>
+                <div class="item item-divider">
+                    Movimientos
+                </div>
+                <ion-list>
+                    <ion-item ng-repeat="movimiento in movimientos" item="movimientos">
+                        <a class="item item-text-wrap">
+                            <label>
+                                <h2>Fecha: {{movimiento.fecha}}</h2>
+                                <h4>Descripción: {{movimiento.descripcion}}</h4>
+                                <h4>Valor: {{movimiento.valor}}</h4>
+                            </label>
+                        </a>
+                    </ion-item>
+                </ion-list>
+                </div>
+            </ion-content>
+        </ion-modal-view>
+    </script>
 </ion-view>
