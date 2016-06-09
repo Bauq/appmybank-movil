@@ -1,0 +1,23 @@
+<ion-view view-title="Chat">
+<ion-nav-buttons side="right">
+        <img class = "redondo" ng-src={{fotoPerfil}} width="35" height="35">
+        <label class= "avatar" style=" margin-left:10px;">
+            <font size="2" color="White"> {{nombreUsuario}} <br> {{email}} </font>
+            <font></font>
+        </label>
+    </ion-nav-buttons>
+     <ion-content>
+    <img ng-src="{{contact.foto}}" style="width: 64px; height: 64px">
+    	<div class="list" ng-init="mostrarMensajes()">
+    	<ion-item ng-repeat="mensaje in mensajes" item="mensajes">
+                <a class="item item-text-wrap">
+                    <label>
+                        <h2>De: {{mensaje.de}}</h2>
+                        <h4>{{mensaje.mensaje}}</h4>
+                        <h4>{{mensaje.fecha}}</h4>
+                    </label>
+                </a>
+            </ion-item>
+        </div>
+  </ion-content>
+</ion-view>

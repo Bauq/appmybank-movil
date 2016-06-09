@@ -93,7 +93,10 @@ angular.module('starter.controllers', ['starter.services'])
             }]
         };
 
-        $cordovaContacts.find({ filter: $scope.contact.nombre, fields: ['displayName'] }).then(function(datoContacto) { //replace 'Robert' with '' if you want to return all contacts with .find()
+        $cordovaContacts.find({
+            filter: $scope.contact.nombre,
+            fields: ['displayName']
+        }).then(function(datoContacto) { //replace 'Robert' with '' if you want to return all contacts with .find()
             if (JSON.stringify(datoContacto) == "[]") {
                 $cordovaContacts.save($scope.contacto).then(function(result) {
                     $rootScope.showAlert("Proceso exitoso, el contacto se ha almacenado en su teléfono");
@@ -107,7 +110,10 @@ angular.module('starter.controllers', ['starter.services'])
     };
 
     $scope.mostrarMapa = function() {
-        var options = { timeout: 10000, enableHighAccuracy: true };
+        var options = {
+            timeout: 10000,
+            enableHighAccuracy: true
+        };
 
         var latLng = new google.maps.LatLng($scope.contact.ubicacion.latitud, $scope.contact.ubicacion.longitud);
         var mapOptions = {
@@ -123,5 +129,17 @@ angular.module('starter.controllers', ['starter.services'])
             title: 'Hello World!'
         });
     };
+
+})
+
+.controller('ChatController', function($scope, $rootScope, Auth, $state, $window) {
+
+    Auth.mensajesNuevos($window.localStorage.email, $window.localStorage.token).then(function(data) {
+        console.log(data.data);
+        $scope.mensajes = data.data;
+    }).catch(function(error) {
+        $rootScope.showAlert('error', error.data.error);
+        $state.go('login');
+    });
 
 })

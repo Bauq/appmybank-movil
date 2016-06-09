@@ -59,6 +59,16 @@ angular.module('starter', ['ionic','ionic.service.core','firebase','starter.cont
         }
       }
     })
+
+  .state('app.chat', {
+      url: '/chat',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/chat.html',
+          controller: 'ChatController'
+        }
+      }
+    });
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/login');
 });

@@ -4,7 +4,7 @@ angular.module('starter.services', [])
         //var usersRef = new Firebase("https://radiant-inferno-2748.firebaseio.com/users");
         var user;
         var conexionLegacyApi = "http://mybank-legacy-api.herokuapp.com/api/v2/";
-         var conexionExternalApi = "https://external-api-test.herokuapp.com/";
+        var conexionExternalApi = "https://external-api-test.herokuapp.com/";
 
         $rootScope.eliminarUsuarioFirebase = function() {
             usersRef.child($rootScope.uid).once('value', function(snapshot) {
@@ -32,12 +32,12 @@ angular.module('starter.services', [])
         };
 
         $rootScope.salir = function() {
-        $window.localStorage.email = "";
-        $window.localStorage.nombreUsuario = "";
-        $window.localStorage.token = "";
-        $window.localStorage.fotoPerfil = "";
-        $state.go('login');
-    };
+            $window.localStorage.email = "";
+            $window.localStorage.nombreUsuario = "";
+            $window.localStorage.token = "";
+            $window.localStorage.fotoPerfil = "";
+            $state.go('login');
+        };
 
         $rootScope.iniciarSesionGoogle = function() {
             usersRef.authWithOAuthPopup("google", function(error, authData) {
@@ -61,11 +61,11 @@ angular.module('starter.services', [])
                             snapshot.ref().parent().update(payload);
                         }
                     });
-                    $http.get(conexionExternalApi+'cliente/'+$window.localStorage.email+'/'+$window.localStorage.token).then(function(data){
+                    $http.get(conexionExternalApi + 'cliente/' + $window.localStorage.email + '/' + $window.localStorage.token).then(function(data) {
                         $state.go('app.main');
-                    }).catch(function(error){
+                    }).catch(function(error) {
                         $rootScope.eliminarUsuarioFirebase();
-                        $rootScope.showAlert('error',error.data.error);
+                        $rootScope.showAlert('error', error.data.error);
                     });
 
                 }
@@ -76,13 +76,20 @@ angular.module('starter.services', [])
         };
         return {
             listarProductos: function(email, token) {
-                return $http.get(conexionLegacyApi + 'producto/get/'+ email +'?token=' + token);
+                return $http.get(conexionLegacyApi + 'producto/get/' + email + '?token=' + token);
             },
             mostrarEjecutivo: function(email, token) {
-                return $http.get(conexionExternalApi +'ejecutivo/' +email+'/'+ token);
+                return $http.get(conexionExternalApi + 'ejecutivo/' + email + '/' + token);
             },
-            mostrarMovimientosProductos : function(email,token,idProd){
-                return $http.get(conexionLegacyApi + 'movimiento/get/'+idProd +'/' +email+'?token='+ token);
+            mostrarMovimientosProductos: function(email, token, idProd) {
+                return $http.get(conexionLegacyApi + 'movimiento/get/' + idProd + '/' + email + '?token=' + token);
+            },
+            mensajesNuevos: function(email, token) {
+                return $http.get(conexionExternalApi + 'mensajes/' + email + '/' + token);
+            },
+            enviarMensaje: function(emailCliente, emailAsesor, mensaje, token) {
+                return $http.post(conexionExternalApi + 'mensajes/' + emailCliente + '/' + emailAsesor + '/' + mensajes + '/' +
+                    token);
             }
 
 
