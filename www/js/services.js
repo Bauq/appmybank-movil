@@ -90,6 +90,9 @@ angular.module('starter.services', [])
             enviarMensaje: function(emailCliente, emailAsesor, mensaje, token) {
                 return $http.get(conexionExternalApi + 'mensaje/' + emailCliente + '/' + emailAsesor + '/' + mensaje + '/' +
                     token);
+            },
+            mostrarMensajes: function(token){
+                return $http.get(conexionExternalApi+'mensajest/'+token);
             }
 
 

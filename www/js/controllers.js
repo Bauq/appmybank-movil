@@ -136,42 +136,98 @@ angular.module('starter.controllers', ['starter.services'])
 
 .controller('ChatController', function($scope, $rootScope, Auth, $state, $window) {
 
-    $scope.nombreUsuario = $window.localStorage.nombreUsuario;
+    var alternate,
+        isIOS = ionic.Platform.isWebView() && ionic.Platform.isIOS();
+
+    $scope.sendMessage = function() {
+        alternate = !alternate;
+
+        var d = new Date();
+        d = d.toLocaleTimeString().replace(/:\d+ /, ' ');
+
+        $scope.messages.push({
+            userId: alternate ? '12345' : '54321',
+            text: $scope.data.message,
+            time: d
+        });
+
+        delete $scope.data.message;
+        $ionicScrollDelegate.scrollBottom(true);
+
+    };
+
+
+    $scope.inputUp = function() {
+        if (isIOS) $scope.data.keyboardHeight = 216;
+        $timeout(function() {
+            $ionicScrollDelegate.scrollBottom(true);
+        }, 300);
+
+    };
+
+    $scope.inputDown = function() {
+        if (isIOS) $scope.data.keyboardHeight = 0;
+        $ionicScrollDelegate.resize();
+    };
+
+    $scope.closeKeyboard = function() {
+        // cordova.plugins.Keyboard.close();
+    };
+
+   
+    $scope.mensaje = {
+        mensaje: ''
+    };
+
+    $scope.mostrarChat = function() {
+         $scope.nombreUsuario = $window.localStorage.nombreUsuario;
     $scope.email = $window.localStorage.email;
     $scope.fotoPerfil = $window.localStorage.fotoPerfil;
     $scope.fotoEmpleado = $window.localStorage.fotoEmpleado;
     $scope.nombreEmpleado = $window.localStorage.nombreEmpleado;
     $scope.correoEmpleado = $window.localStorage.correoEmpleado;
-    $scope.mensaje = {
-       mensaje: ''
-   };
-
-    if ($scope.nombreEmpleado == "undefined") {
-        Auth.mostrarEjecutivo($window.localStorage.email, $window.localStorage.token).then(function(data) {
-            $scope.nombreEmpleado = data.data.nombre_completo;
-            $scope.fotoEmpleado = data.data.foto;
-            $scope.correoEmpleado = data.data.correo;
+        if ($scope.nombreEmpleado == "undefined") {
+            Auth.mostrarEjecutivo($window.localStorage.email, $window.localStorage.token).then(function(data) {
+                $scope.nombreEmpleado = data.data.nombre_completo;
+                $scope.fotoEmpleado = data.data.foto;
+                $scope.correoEmpleado = data.data.correo;
+            }).catch(function(error) {
+                $rootScope.showAlert('error', error.data.error);
+            });
+        }
+        Auth.mostrarMensajes($window.localStorage.token).then(function(data) {
+            console.log(data);
+            $scope.mensajes = data.data;
         }).catch(function(error) {
             $rootScope.showAlert('error', error.data.error);
-        });
-    }
-    Auth.mensajesNuevos($window.localStorage.email, $window.localStorage.token).then(function(data) {
-        $scope.mensajes = data.data;
-    }).catch(function(error) {
-        $rootScope.showAlert('error', error.data.error);
-        $state.go('login');
-    });
 
-    $scope.enviar = function(){
+        });
+    };
+
+    $scope.enviar = function() {
         console.log("enviar")
-        if($scope.mensaje != ''){
-            Auth.enviarMensaje($window.localStorage.email,$scope.correoEmpleado,$scope.mensaje.mensaje,$window.localStorage.token).then(function(data){
+        if ($scope.mensaje != '') {
+            Auth.enviarMensaje($window.localStorage.email, $scope.correoEmpleado, $scope.mensaje.mensaje, $window.localStorage.token).then(function(data) {
                 $rootScope.showAlert('', data.data);
                 $scope.mensaje.mensaje = '';
-            }).catch(function(error){
+                $scope.mostrarChat();
+            }).catch(function(error) {
                 $rootScope.showAlert('error', error.data.error);
             })
         }
+    };
+
+    $scope.inputUp = function() {
+        if (isIOS) $scope.data.keyboardHeight = 216;
+        $timeout(function() {
+            $ionicScrollDelegate.scrollBottom(true);
+        }, 300);
+
+    };
+
+    $scope.inputDown = function() {
+        if (isIOS) $scope.data.keyboardHeight = 0;
+        $ionicScrollDelegate.resize();
     };
 
 })

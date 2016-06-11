@@ -1,10 +1,11 @@
-<ion-view>
-    <ion-content padding="true" class="background">
-        <div style="text-align: center; margin-top: 20px;">
-            <img src="img/Logo.png" />
+<ion-content padding="true" class="background">
+    <div class="tabs-striped  tabs-background-positive tabs-color-light">
+        <div class="tabs">
+            <a class="button button-positive icon-left ion-social-google" ng-click="login()"> Ingresar con Google </a>
         </div>
-        <div ng-hide="authData" ng-click="login()" class="centrado">
-            <button id="LoginButton" class="button button-light botonRedondeado button-large button-block icon-left ion-social-google">Ingresar con Gmail</button>
-        </div>
-    </ion-content>
+    </div>
+    <div style="text-align: center; margin-top: 20px;">
+        <img src="img/Logo.png" />
+    </div>
+</ion-content>
 </ion-view>

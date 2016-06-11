@@ -1,30 +1,26 @@
 <ion-view view-title="Chat">
     <ion-nav-buttons side="right">
-        <img class="redondo" ng-src={{fotoPerfil}} width="35" height="35">
+        <img class="redondo" ng-src={{fotoEmpleado}} width="35" height="35">
         <label class="avatar" style=" margin-left:10px;">
-            <font size="2" color="White"> {{nombreUsuario}}
-                <br> {{email}} </font>
-            <font></font>
+            <font size="2" color="White"> {{nombreEmpleado}}
         </label>
     </ion-nav-buttons>
-    <ion-content>
-        <img ng-src="{{fotoEmpleado}}" style="width: 64px; height: 64px">
-        <label>{{nombreEmpleado}}</label>
-        <div class="list" ng-init="mostrarMensajes()">
-            <ion-item ng-repeat="mensaje in mensajes" item="mensajes">
-                <a class="item item-text-wrap">
-                    <label>
-                        <h4>{{mensaje.mensaje}}</h4>
-                        <h4>{{mensaje.fecha}}</h4>
-                    </label>
-                </a>
-            </ion-item>
+    <ion-content class="content-stable" ng-init="mostrarChat()">
+        <div ng-repeat="mensaje in mensajes" item="mensajes" class="messages">
+            <div class="message">
+                <a style="font-size: 10px; color: #000000">{{mensaje.de}}</a><br />
+                <h5>
+                {{ mensaje.mensaje }}
+                <br />
+                <a style="font-size: 10px; color: #000000">{{mensaje.fecha}}</a>
+               </h5>
+            </div>
         </div>
-        <ion-footer-bar keyboard-attach class="bar-stable item-input-inset">
-            <label class="item-input-wrapper">
-                <input type="text" placeholder="Escribir mensaje" on-return="closeKeyboard()" ng-model="mensaje.mensaje" on-focus="inputUp()" on-blur="inputDown()" />
-            </label>
-            <a class="button button-stable icon ion-paper-airplane" ng-click="enviar()"></a>
-        </ion-footer-bar>
     </ion-content>
+    <ion-footer-bar keyboard-attach class="bar-stable item-input-inset inputChat">
+        <label class="item-input-wrapper">
+            <input type="text" placeholder="Escribir mensaje" on-return="sendMessage();closeKeyboard()" ng-model="mensaje.mensaje" on-focus="inputUp()" on-blur="inputDown()" />
+        </label>
+        <a class="button button-stable icon ion-paper-airplane" ng-click="enviar()"></a>
+    </ion-footer-bar>
 </ion-view>
