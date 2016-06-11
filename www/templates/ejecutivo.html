@@ -12,9 +12,11 @@
             <a class="item item-text-wrap">
                 <label>
                     <img ng-src={{contact.foto}} idth="50" height="50">
-                    <h2>Nombre: {{contact.nombre}}</h2>
+                    <h2>Nombre: {{contact.nombre_completo}}</h2>
+                    <h4>{{contact.tipo_doc}}: {{contact.documento}}</h4>
                     <h4>Correo: {{contact.correo}}</h4>
                     <h4>Celular: {{contact.celular}}</h4>
+                    <h4>Dirección: {{contact.direccion}}
                     <a class="button button-full button-positive" href="tel:{{contact.celular}}">Llamar</a>
                     <button class="button button-full button-positive" ng-click="anadirContacto()">
                         Agregar a contactos

@@ -37,3 +37,8 @@
 .botonRedondeado{
     border-radius:-2px -2px -2px -2px;
 }
+
+.inputChat{
+    position:absolute;
+    bottom:5px;
+}

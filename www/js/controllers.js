@@ -67,8 +67,10 @@ angular.module('starter.controllers', ['starter.services'])
 
     $scope.mostrarEjecutivo = function() {
         Auth.mostrarEjecutivo($window.localStorage.email, $window.localStorage.token).then(function(data) {
-            console.log(data.data);
             $scope.contact = data.data;
+            $window.localStorage.nombreEmpleado = $scope.contact.nombre;
+            $window.localStorage.fotoEmpleado = $scope.contact.foto;
+            $window.localStorage.correoEmpleado = $scope.contact.correo;
             $scope.mostrarMapa();
         }).catch(function(error) {
             $rootScope.showAlert('error', error.data.error);
@@ -115,7 +117,7 @@ angular.module('starter.controllers', ['starter.services'])
             enableHighAccuracy: true
         };
 
-        var latLng = new google.maps.LatLng($scope.contact.ubicacion.latitud, $scope.contact.ubicacion.longitud);
+        var latLng = new google.maps.LatLng($scope.contact.latitud, $scope.contact.longitud);
         var mapOptions = {
             center: latLng,
             zoom: 15,
@@ -134,12 +136,42 @@ angular.module('starter.controllers', ['starter.services'])
 
 .controller('ChatController', function($scope, $rootScope, Auth, $state, $window) {
 
+    $scope.nombreUsuario = $window.localStorage.nombreUsuario;
+    $scope.email = $window.localStorage.email;
+    $scope.fotoPerfil = $window.localStorage.fotoPerfil;
+    $scope.fotoEmpleado = $window.localStorage.fotoEmpleado;
+    $scope.nombreEmpleado = $window.localStorage.nombreEmpleado;
+    $scope.correoEmpleado = $window.localStorage.correoEmpleado;
+    $scope.mensaje = {
+       mensaje: ''
+   };
+
+    if ($scope.nombreEmpleado == "undefined") {
+        Auth.mostrarEjecutivo($window.localStorage.email, $window.localStorage.token).then(function(data) {
+            $scope.nombreEmpleado = data.data.nombre_completo;
+            $scope.fotoEmpleado = data.data.foto;
+            $scope.correoEmpleado = data.data.correo;
+        }).catch(function(error) {
+            $rootScope.showAlert('error', error.data.error);
+        });
+    }
     Auth.mensajesNuevos($window.localStorage.email, $window.localStorage.token).then(function(data) {
-        console.log(data.data);
         $scope.mensajes = data.data;
     }).catch(function(error) {
         $rootScope.showAlert('error', error.data.error);
         $state.go('login');
     });
+
+    $scope.enviar = function(){
+        console.log("enviar")
+        if($scope.mensaje != ''){
+            Auth.enviarMensaje($window.localStorage.email,$scope.correoEmpleado,$scope.mensaje.mensaje,$window.localStorage.token).then(function(data){
+                $rootScope.showAlert('', data.data);
+                $scope.mensaje.mensaje = '';
+            }).catch(function(error){
+                $rootScope.showAlert('error', error.data.error);
+            })
+        }
+    };
 
 })

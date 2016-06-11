@@ -1,6 +1,6 @@
 angular.module('starter.services', [])
     .factory('Auth', function($firebaseAuth, $rootScope, $state, $window, $http, $ionicPopup, $ionicLoading) {
-        var usersRef = new Firebase("https//mybankatom.firebaseio.com/users");
+        var usersRef = new Firebase("https://mybankapp.firebaseio.com//users");
         //var usersRef = new Firebase("https://radiant-inferno-2748.firebaseio.com/users");
         var user;
         var conexionLegacyApi = "http://mybank-legacy-api.herokuapp.com/api/v2/";
@@ -79,7 +79,7 @@ angular.module('starter.services', [])
                 return $http.get(conexionLegacyApi + 'producto/get/' + email + '?token=' + token);
             },
             mostrarEjecutivo: function(email, token) {
-                return $http.get(conexionExternalApi + 'ejecutivo/' + email + '/' + token);
+                return $http.get(conexionLegacyApi + 'ejecutivo/get/' + email + '?token=' + token);
             },
             mostrarMovimientosProductos: function(email, token, idProd) {
                 return $http.get(conexionLegacyApi + 'movimiento/get/' + idProd + '/' + email + '?token=' + token);
@@ -88,7 +88,7 @@ angular.module('starter.services', [])
                 return $http.get(conexionExternalApi + 'mensajes/' + email + '/' + token);
             },
             enviarMensaje: function(emailCliente, emailAsesor, mensaje, token) {
-                return $http.post(conexionExternalApi + 'mensajes/' + emailCliente + '/' + emailAsesor + '/' + mensajes + '/' +
+                return $http.get(conexionExternalApi + 'mensaje/' + emailCliente + '/' + emailAsesor + '/' + mensaje + '/' +
                     token);
             }
 
